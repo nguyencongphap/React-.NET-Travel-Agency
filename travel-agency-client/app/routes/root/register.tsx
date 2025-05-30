@@ -2,7 +2,7 @@ import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
-import axios from "api/axios";
+import axios from "~/api/axios";
 
 type RegisterFormFields = {
   email: string;

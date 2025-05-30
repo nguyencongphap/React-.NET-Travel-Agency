@@ -1,4 +1,4 @@
-import axios from "api/axios";
+import axios from "~/api/axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router";
 
@@ -66,6 +66,8 @@ const SignIn = () => {
                 <span className="p-18-semibold text-white">Sign In</span>
               </button>
             </form>
+            <p>Need an Account?</p>
+            <Link to="/register">Sign Up</Link>
           </article>
         </div>
       </section>
