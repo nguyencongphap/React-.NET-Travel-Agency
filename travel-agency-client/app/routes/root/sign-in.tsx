@@ -1,6 +1,8 @@
 import axios from "~/api/axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router";
+import { useContext } from "react";
+import AuthContext from "~/context/AuthProvider";
 
 type SignInFormFields = {
   username: string;
@@ -8,6 +10,8 @@ type SignInFormFields = {
 };
 
 const SignIn = () => {
+  const { auth, setAuth } = useContext(AuthContext);
+
   const { register, handleSubmit } = useForm<SignInFormFields>();
 
   const onSubmit: SubmitHandler<SignInFormFields> = async (data) => {
@@ -18,12 +22,18 @@ const SignIn = () => {
 
     try {
       const resp = await axios.post("/login", { username, password });
+      const accessToken = resp?.data?.accessToken;
+      setAuth({ username, password, accessToken });
 
       console.log("resp", resp);
     } catch (error) {
       console.log("error", error);
     }
   };
+
+  // TODO: DEL LATER
+  console.log("auth", auth);
+  console.log("setAuth", setAuth);
 
   // check className auth for how to set up bg
   return (
