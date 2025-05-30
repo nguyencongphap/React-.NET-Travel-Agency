@@ -1,8 +1,29 @@
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
+import axios from "api/axios";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link } from "react-router";
 
+type SignInFormFields = {
+  username: string;
+  password: string;
+};
+
 const SignIn = () => {
-  const handleSignIn = async () => {};
+  const { register, handleSubmit } = useForm<SignInFormFields>();
+
+  const onSubmit: SubmitHandler<SignInFormFields> = async (data) => {
+    // TODO: DEL LATER
+    console.log(data);
+
+    const { username, password } = data;
+
+    try {
+      const resp = await axios.post("/login", { username, password });
+
+      console.log("resp", resp);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   // check className auth for how to set up bg
   return (
@@ -24,15 +45,28 @@ const SignIn = () => {
             <h2 className="p-28-semibold text-dark-100 text-center">
               Start Your Travel Journey
             </h2>
+            <form
+              className="flex flex-col gap-2"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <input
+                {...register("username")}
+                type="text"
+                placeholder="Email"
+              />
+              <input
+                {...register("password")}
+                type="password"
+                placeholder="Password"
+              />
+              <button
+                type="submit"
+                className="button-class !h-11 !w-full mt-[30px]"
+              >
+                <span className="p-18-semibold text-white">Sign In</span>
+              </button>
+            </form>
           </article>
-
-          <ButtonComponent
-            type="button"
-            className="button-class !h-11 !w-full"
-            onClick={handleSignIn}
-          >
-            <span className="p-18-semibold text-white">Sign In</span>
-          </ButtonComponent>
         </div>
       </section>
     </main>

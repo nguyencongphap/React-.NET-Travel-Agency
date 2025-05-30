@@ -1,6 +1,8 @@
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import axios from "api/axios";
 
 type RegisterFormFields = {
   email: string;
@@ -11,8 +13,22 @@ type RegisterFormFields = {
 const Register = () => {
   const { register, handleSubmit } = useForm<RegisterFormFields>();
 
-  const onSubmit: SubmitHandler<RegisterFormFields> = (data) => {
+  const [isSuccessRegister, setIsSuccessRegister] = useState(false);
+
+  const onSubmit: SubmitHandler<RegisterFormFields> = async (data) => {
+    // TODO: DEL LATER
     console.log(data);
+
+    const { email, password } = data;
+
+    try {
+      const resp = await axios.post("/register", { email, password });
+
+      console.log("resp", resp);
+      setIsSuccessRegister(true);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   // check className auth for how to set up bg
@@ -31,33 +47,46 @@ const Register = () => {
             <h1 className="p-28-bold text-dark-100">Tourvisto</h1>
           </header>
 
-          <article>
-            <h2 className="p-28-semibold text-dark-100 text-center">
-              Start Your Travel Journey
-            </h2>
-            <form
-              className="flex flex-col gap-2"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <input {...register("email")} type="text" placeholder="Email" />
-              <input
-                {...register("password")}
-                type="passsword"
-                placeholder="Password"
-              />
-              <input
-                {...register("confirmPassword")}
-                type="passsword"
-                placeholder="Confirm Password"
-              />
-              <button
-                type="submit"
-                className="button-class !h-11 !w-full mt-[30px]"
+          {isSuccessRegister ? (
+            <article>
+              <h2 className="p-28-semibold text-dark-100 text-center">
+                Success!
+              </h2>
+              <p className="flex justify-center mt-3">
+                <Link to="/sign-in">Sign in</Link>
+              </p>
+            </article>
+          ) : (
+            <article>
+              <h2 className="p-28-semibold text-dark-100 text-center">
+                Start Your Travel Journey
+              </h2>
+              <form
+                className="flex flex-col gap-2"
+                onSubmit={handleSubmit(onSubmit)}
               >
-                <span className="p-18-semibold text-white">Register</span>
-              </button>
-            </form>
-          </article>
+                <input {...register("email")} type="text" placeholder="Email" />
+                <input
+                  {...register("password")}
+                  type="password"
+                  placeholder="Password"
+                />
+                <input
+                  {...register("confirmPassword")}
+                  type="password"
+                  placeholder="Confirm Password"
+                />
+                <button
+                  type="submit"
+                  className="button-class !h-11 !w-full mt-[30px]"
+                >
+                  <span className="p-18-semibold text-white">Register</span>
+                </button>
+              </form>
+              <p>Already register?</p>
+              <Link to="/sign-in">Sign in</Link>
+            </article>
+          )}
         </div>
       </section>
     </main>

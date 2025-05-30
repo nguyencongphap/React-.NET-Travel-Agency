@@ -24,7 +24,7 @@ namespace travel_agency_server.Controllers
                 return BadRequest("User already exists or invalid data.");
             }
 
-            return Ok(user);
+            return Ok();
         }
 
         [HttpPost("/login")]
