@@ -1,8 +1,8 @@
-import axios from "~/api/axios";
+import axios, { axiosPrivate } from "~/api/axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link } from "react-router";
-import { useContext } from "react";
-import AuthContext from "~/context/AuthProvider";
+import { Link, useLocation } from "react-router";
+import useAuth from "~/hooks/useAuth";
+import useAxiosPrivate from "~/hooks/useAxiosPrivate";
 
 type SignInFormFields = {
   username: string;
@@ -10,7 +10,10 @@ type SignInFormFields = {
 };
 
 const SignIn = () => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useAuth();
+  const location = useLocation();
+
+  const axiosPrivate = useAxiosPrivate();
 
   const { register, handleSubmit } = useForm<SignInFormFields>();
 
@@ -23,7 +26,8 @@ const SignIn = () => {
     try {
       const resp = await axios.post("/login", { username, password });
       const accessToken = resp?.data?.accessToken;
-      setAuth({ username, password, accessToken });
+      const refreshToken = resp?.data?.refreshToken;
+      setAuth({ username, password, accessToken, refreshToken });
 
       console.log("resp", resp);
     } catch (error) {
@@ -31,9 +35,7 @@ const SignIn = () => {
     }
   };
 
-  // TODO: DEL LATER
   console.log("auth", auth);
-  console.log("setAuth", setAuth);
 
   // check className auth for how to set up bg
   return (
@@ -78,6 +80,15 @@ const SignIn = () => {
             </form>
             <p>Need an Account?</p>
             <Link to="/register">Sign Up</Link>
+
+            <button
+              onClick={async () => {
+                const resp = await axiosPrivate.get("checkAuth");
+                console.log("check-auth resp", resp);
+              }}
+            >
+              Send Authorized Request
+            </button>
           </article>
         </div>
       </section>

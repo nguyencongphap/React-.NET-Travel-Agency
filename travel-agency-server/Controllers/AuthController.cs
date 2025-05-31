@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using travel_agency_server.Database.Models;
 using travel_agency_server.Database.Models.Dtos.Request;
 using travel_agency_server.Database.Models.Dtos.Response;
@@ -54,6 +55,13 @@ namespace travel_agency_server.Controllers
             }
 
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("/checkAuth")]
+        public IActionResult AuthenticatedOnlyEndpoint()
+        {
+            return Ok("You are authenticated!");
         }
         
     }

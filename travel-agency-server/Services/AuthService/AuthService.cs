@@ -55,7 +55,7 @@ namespace travel_agency_server.Services.AuthService
 
         public async Task<TokenResponseDto?> RefreshTokensAsync(RefreshTokenRequestDto request)
         {
-            var user = await ValidateRefreshTokenAsync(request.UserId, request.RefreshToken);
+            var user = await ValidateRefreshTokenAsync(request.Username, request.RefreshToken);
 
             if (user is null) return null;
 
@@ -66,15 +66,15 @@ namespace travel_agency_server.Services.AuthService
         {
             return new TokenResponseDto
             {
-                AccessToken = CreateToken(user),
+                AccessToken = CreateAccessToken(user),
                 RefreshToken = await GenerateAndSaveRefreshTokenAsync(user)
             };
         }
 
         // TODO: Refactor this using Fluent validation
-        private async Task<User?> ValidateRefreshTokenAsync(Guid userId, string refreshToken)
+        private async Task<User?> ValidateRefreshTokenAsync(string username, string refreshToken)
         {
-            var user = await dbContext.Users.FindAsync(userId);
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Username == username);
             if (
                 user is null ||
                 user.RefreshToken != refreshToken ||
@@ -97,7 +97,7 @@ namespace travel_agency_server.Services.AuthService
             return refreshToken;
         }
 
-        private string CreateToken(User user)
+        private string CreateAccessToken(User user)
         {
             var claims = new List<Claim>
             {
@@ -114,7 +114,7 @@ namespace travel_agency_server.Services.AuthService
                 issuer: configuration.GetValue<string>("AppSettings:Issuer"), // by using this env var, it can check whethe the token given by the client was indeed issued by the server
                 audience: configuration.GetValue<string>("AppSettings:Audience"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
+                expires: DateTime.UtcNow.AddMinutes(10),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
