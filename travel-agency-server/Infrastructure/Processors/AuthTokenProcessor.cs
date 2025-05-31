@@ -83,7 +83,8 @@ namespace Infrastructure.Processors
                     Expires = expiration,
                     IsEssential = true, // mark cookie as essential bc that's needed for GDPR compliance when using cookies
                     Secure = true, // make cookie only get transmitted over HTTPS
-                    SameSite = SameSiteMode.Strict, // prevent cookie from being sent in a cross site request to mitigate CSRF attack
+                    SameSite = SameSiteMode.None, // REQUIRED for cross-origin cookie. Make sure you're using HTTPS on both frontend and backend when using SameSite=None
+                    // SameSiteMode.Strict prevents cookie from being sent in a cross site request to mitigate CSRF attack, but our React app is not same site
                 }
             );
         }

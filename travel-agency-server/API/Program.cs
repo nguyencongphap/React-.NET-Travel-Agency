@@ -92,11 +92,26 @@ builder.Services.AddAuthorization();
 // add exception handler
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
+// Add CORS services
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+                .AllowCredentials()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    // Use CORS before other middleware
+    app.UseCors("AllowReactApp");
+
     app.MapOpenApi();
 
     // set up scalar

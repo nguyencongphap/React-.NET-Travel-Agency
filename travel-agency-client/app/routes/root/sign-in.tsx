@@ -1,6 +1,6 @@
-import axios, { axiosPrivate } from "~/api/axios";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, useLocation } from "react-router";
+import axios from "~/api/axios";
 import useAuth from "~/hooks/useAuth";
 import useAxiosPrivate from "~/hooks/useAxiosPrivate";
 
@@ -24,10 +24,12 @@ const SignIn = () => {
     const { username, password } = data;
 
     try {
-      const resp = await axios.post("/login", { username, password });
-      const accessToken = resp?.data?.accessToken;
-      const refreshToken = resp?.data?.refreshToken;
-      setAuth({ username, password, accessToken, refreshToken });
+      const resp = await axios.post<void>("/login", {
+        email: username,
+        password,
+      });
+
+      setAuth({ username, password });
 
       console.log("resp", resp);
     } catch (error) {
@@ -88,6 +90,14 @@ const SignIn = () => {
               }}
             >
               Send Authorized Request
+            </button>
+
+            <button
+              onClick={async () => {
+                await axiosPrivate.get("/movies");
+              }}
+            >
+              Test
             </button>
           </article>
         </div>

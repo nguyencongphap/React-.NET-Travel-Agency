@@ -1,8 +1,9 @@
 import axios from "axios";
-const BASE_URL = "http://localhost:5198";
+const BASE_URL = "https://localhost:7105";
 
 export default axios.create({
   baseURL: BASE_URL,
+  withCredentials: true, // bc we're using cookies
 });
 
 // we attach to this the interceptors that will attach
@@ -11,5 +12,5 @@ export default axios.create({
 export const axiosPrivate = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "applciation/json" },
-  withCredentials: true,
+  withCredentials: true, // bc we're using cookies
 });
