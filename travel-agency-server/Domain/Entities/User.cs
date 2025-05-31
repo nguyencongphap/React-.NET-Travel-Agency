@@ -6,7 +6,7 @@ namespace travel_agency_server.Domain.Entities
     {
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public int? RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiresAtUtc { get; set; }
 
         public static User Create(string email, string firstName, string lastName)
