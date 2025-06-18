@@ -25,7 +25,7 @@ const SignIn = () => {
 
     try {
       const resp = await axios.post<void>("/login", {
-        email: username,
+        username,
         password,
       });
 
