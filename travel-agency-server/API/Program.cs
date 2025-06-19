@@ -45,12 +45,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 // for dependency injection
+// AddScoped means that the service will be created once per request and disposed of at the end of the request
 builder.Services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddHttpContextAccessor(); // to get cookies from client's request
 
 // add auth middleware
+// This scheme means we want our app to use JWT authentication
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
