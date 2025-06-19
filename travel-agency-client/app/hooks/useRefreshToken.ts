@@ -6,21 +6,12 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     if (auth) {
-      const resp = await axios.post<{
-        accessToken: string;
-        refreshToken: string;
-      }>("/refreshToken", {
-        username: auth?.username,
-        refreshToken: auth?.refreshToken,
-      });
+      const resp = await axios.post("/refresh");
+
       const newAccessToken = resp?.data?.accessToken;
-      const newRefreshToken = resp?.data?.refreshToken;
 
-      console.log("refresh resp", resp);
-
-      // TODO: remove this when  switch to storing refresh token in cookie
-      // update refresh token in context
-      setAuth((prev) => ({ ...prev, refreshToken: newRefreshToken }));
+      // update access token in context
+      setAuth((prev) => ({ ...prev, accessToken: newAccessToken }));
 
       return resp?.data?.accessToken;
     }

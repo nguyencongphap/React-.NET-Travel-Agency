@@ -76,16 +76,17 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret))
     };
 
+    // TODO: DEL LATER since we use access token with Authorization header instead of cookie 
     // specify where to find the jwt to validate
     // since we're using cookie instead of Authorization header
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
-        {
-            context.Token = context.Request.Cookies["ACCESS_TOKEN"];
-            return Task.CompletedTask;
-        }
-    };
+    //options.Events = new JwtBearerEvents
+    //{
+    //    OnMessageReceived = context =>
+    //    {
+    //        context.Token = context.Request.Cookies["ACCESS_TOKEN"];
+    //        return Task.CompletedTask;
+    //    }
+    //};
 
 });
 

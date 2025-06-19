@@ -30,9 +30,9 @@ namespace API.Controllers
         [HttpPost("/login")]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            await _accountService.LoginAsync(loginRequest);
+            var accessToken = await _accountService.LoginAsync(loginRequest);
 
-            return Ok();
+            return Ok(new { accessToken });
         }
 
         [HttpPost("/refresh")]
@@ -41,9 +41,9 @@ namespace API.Controllers
             // get cookie containing the refresh token from client using HttpContext
             var refreshToken = HttpContext.Request.Cookies["REFRESH_TOKEN"];
 
-            await _accountService.RefreshTokenAsync(refreshToken);
+            var accessToken = await _accountService.RefreshTokenAsync(refreshToken);
 
-            return Ok();
+            return Ok(new { accessToken });
         }
 
         [Authorize]

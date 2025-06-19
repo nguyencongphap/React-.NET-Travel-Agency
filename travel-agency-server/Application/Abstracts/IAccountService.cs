@@ -6,8 +6,8 @@ namespace Application.Abstracts
     {
         Task RegisterAsync(RegisterRequest registerRequest);
 
-        Task LoginAsync(LoginRequest loginRequest);
+        Task<string> LoginAsync(LoginRequest loginRequest);
 
-        Task RefreshTokenAsync(string? refreshToken);
+        Task<string> RefreshTokenAsync(string? refreshToken);
     }
 }

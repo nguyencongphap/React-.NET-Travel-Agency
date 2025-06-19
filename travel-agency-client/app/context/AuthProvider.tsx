@@ -11,7 +11,6 @@ interface AuthState {
   username: string;
   password: string;
   accessToken: string;
-  refreshToken: string;
 }
 
 const AuthContext = createContext<
@@ -37,5 +36,3 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 };
 
 export default AuthContext;
-
-// TODO: Continue at 16:20

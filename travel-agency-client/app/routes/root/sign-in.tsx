@@ -11,25 +11,21 @@ type SignInFormFields = {
 
 const SignIn = () => {
   const { auth, setAuth } = useAuth();
-  const location = useLocation();
 
   const axiosPrivate = useAxiosPrivate();
 
   const { register, handleSubmit } = useForm<SignInFormFields>();
 
   const onSubmit: SubmitHandler<SignInFormFields> = async (data) => {
-    // TODO: DEL LATER
-    console.log(data);
-
     const { username, password } = data;
 
     try {
-      const resp = await axios.post<void>("/login", {
+      const resp = await axios.post<{ accessToken: string }>("/login", {
         username,
         password,
       });
 
-      setAuth({ username, password });
+      setAuth({ username, password, accessToken: resp?.data?.accessToken });
 
       console.log("resp", resp);
     } catch (error) {

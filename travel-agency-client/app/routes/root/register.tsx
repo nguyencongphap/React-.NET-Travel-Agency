@@ -18,9 +18,6 @@ const Register = () => {
   const [isSuccessRegister, setIsSuccessRegister] = useState(false);
 
   const onSubmit: SubmitHandler<RegisterFormFields> = async (data) => {
-    // TODO: DEL LATER
-    console.log(data);
-
     const { firstName, lastName, email, password } = data;
 
     try {

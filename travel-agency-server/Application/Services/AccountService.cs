@@ -52,7 +52,7 @@ namespace Application.Services
             }
         }
 
-        public async Task LoginAsync(LoginRequest loginRequest)
+        public async Task<string> LoginAsync(LoginRequest loginRequest)
         {
             var user = await _userManager.FindByEmailAsync(loginRequest.Username);
 
@@ -61,11 +61,13 @@ namespace Application.Services
                 throw new LoginFailedException(loginRequest.Username);
             }
 
-            await GenerateNewTokensForUser(user);
+            var accessToken = await GenerateNewTokensForUser(user);
+
+            return accessToken;
         }
 
         // Refresh the access token with a valid refresh token
-        public async Task RefreshTokenAsync(string? refreshToken)
+        public async Task<string> RefreshTokenAsync(string? refreshToken)
         {
             if (string.IsNullOrEmpty(refreshToken)) throw new RefreshTokenException("Refresh token is missing.");
 
@@ -77,11 +79,13 @@ namespace Application.Services
             // check if refresh token is expired, if yes, they'll have to login again
             if (user.RefreshTokenExpiresAtUtc < DateTime.UtcNow) throw new RefreshTokenException("Refresh token is expired.");
 
-            await GenerateNewTokensForUser(user);
+            var accessToken = await GenerateNewTokensForUser(user);
+
+            return accessToken;
         }
 
 
-        private async Task GenerateNewTokensForUser(User user)
+        private async Task<string> GenerateNewTokensForUser(User user)
         {
             // create access token
             var (jwtToken, expirationDateInUtc) = _authTokenProcessor.GenerateJwtToken(user);
@@ -97,8 +101,10 @@ namespace Application.Services
             await _userManager.UpdateAsync(user);
 
             // return access token and refresh token stored in http-only cookies to client
-            _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", jwtToken, expirationDateInUtc);
+            //_authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", jwtToken, expirationDateInUtc); // We don't want to store auth token into cookies
             _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("REFRESH_TOKEN", user.RefreshToken, refreshTokenExpirationDateInUtc);
+
+            return jwtToken;
         }
 
     }
