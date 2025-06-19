@@ -54,11 +54,11 @@ namespace Application.Services
 
         public async Task LoginAsync(LoginRequest loginRequest)
         {
-            var user = await _userManager.FindByEmailAsync(loginRequest.Email);
+            var user = await _userManager.FindByEmailAsync(loginRequest.Username);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginRequest.Password))
             {
-                throw new LoginFailedException(loginRequest.Email);
+                throw new LoginFailedException(loginRequest.Username);
             }
 
             await GenerateNewTokensForUser(user);

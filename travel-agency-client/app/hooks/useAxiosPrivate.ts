@@ -8,6 +8,7 @@ const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
+  // TODO: Update this to work with cookies instead of Authorization header
   // useEffect(() => {
   //   // these interceptors are like event listeners,
   //   // we need to remove them after attaching and using them.

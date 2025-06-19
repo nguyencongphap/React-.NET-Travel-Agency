@@ -5,6 +5,8 @@ import { useState } from "react";
 import axios from "~/api/axios";
 
 type RegisterFormFields = {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -19,10 +21,15 @@ const Register = () => {
     // TODO: DEL LATER
     console.log(data);
 
-    const { email, password } = data;
+    const { firstName, lastName, email, password } = data;
 
     try {
-      const resp = await axios.post("/register", { email, password });
+      const resp = await axios.post("/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
 
       console.log("resp", resp);
       setIsSuccessRegister(true);
@@ -65,6 +72,16 @@ const Register = () => {
                 className="flex flex-col gap-2"
                 onSubmit={handleSubmit(onSubmit)}
               >
+                <input
+                  {...register("firstName")}
+                  type="text"
+                  placeholder="First Name"
+                />
+                <input
+                  {...register("lastName")}
+                  type="text"
+                  placeholder="Last Name"
+                />
                 <input {...register("email")} type="text" placeholder="Email" />
                 <input
                   {...register("password")}
