@@ -9,7 +9,7 @@ export async function clientLoader() {
   try {
     const user = await GetCurrentUser();
 
-    if (!user.id) return redirect("/");
+    if (user.id) return redirect("/");
   } catch (error) {
     console.log("Error fetching user", error);
   }
