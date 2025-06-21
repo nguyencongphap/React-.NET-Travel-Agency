@@ -108,7 +108,7 @@ namespace Application.Services
             await _userManager.UpdateAsync(user);
 
             // return access token and refresh token stored in http-only cookies to client
-            //_authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", jwtToken, expirationDateInUtc); // We don't want to store auth token into cookies
+            _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", jwtToken, expirationDateInUtc); // We don't want to store auth token into cookies
             _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("REFRESH_TOKEN", user.RefreshToken, refreshTokenExpirationDateInUtc);
 
             return jwtToken;

@@ -2,7 +2,7 @@ import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { Link } from "react-router";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useState } from "react";
-import axios from "~/api/axios";
+import Axios from "~/api/axios";
 
 type RegisterFormFields = {
   firstName: string;
@@ -21,7 +21,7 @@ const Register = () => {
     const { firstName, lastName, email, password } = data;
 
     try {
-      const resp = await axios.post("/register", {
+      const resp = await Axios.post("/register", {
         firstName,
         lastName,
         email,

@@ -1,4 +1,4 @@
-import axios from "~/api/axios";
+import Axios from "~/api/axios";
 import useAuth from "./useAuth";
 
 const useRefreshToken = () => {
@@ -6,7 +6,7 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     if (auth) {
-      const resp = await axios.post("/refresh");
+      const resp = await Axios.post("/refresh");
 
       const newAccessToken = resp?.data?.accessToken;
 

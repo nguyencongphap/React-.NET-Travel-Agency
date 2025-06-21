@@ -2,6 +2,7 @@
 using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using travel_agency_server.Domain.Requests;
 
@@ -45,6 +46,29 @@ namespace API.Controllers
             var accessToken = await _accountService.RefreshTokenAsync(refreshToken);
 
             return Ok(new { accessToken });
+        }
+
+        [HttpGet("/me")]
+        [Authorize] // Ensures only logged-in users can access
+        public IActionResult GetCurrentUser()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var userName = User.Identity?.Name;
+            var roles = User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(new
+            {
+                Id = userId,
+                Email = userEmail,
+                Name = userName,
+                Roles = roles
+            });
         }
 
         // TODO: DEL LATER. For testing authorization

@@ -35,11 +35,13 @@ namespace Infrastructure.Processors
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique identifier of each token
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim(JwtRegisteredClaimNames.NameId, user.ToString())
-            }.Concat(roles.Select(r => new Claim(ClaimTypes.Role, r))); // Add a claim for each role
+                // Recommended .NET-specific claim types:
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // for User.FindFirst(ClaimTypes.NameIdentifier)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.UserName ?? user.Email) // fallback to email if no username
+
+            }
+            .Concat(roles.Select(r => new Claim(ClaimTypes.Role, r))); // Add a claim for each role
 
             var expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationTimeInMinutes);
 

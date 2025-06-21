@@ -6,7 +6,6 @@ import {
   type SetStateAction,
 } from "react";
 
-// TODO: update later for more security
 interface AuthState {
   username: string;
   accessToken: string;

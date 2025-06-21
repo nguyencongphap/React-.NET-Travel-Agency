@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { sidebarItems } from "~/constants";
 import { cn } from "~/lib/utils";
 
@@ -9,6 +9,13 @@ const NavItems = ({ handleClick }: NavItemsProps) => {
     name: "Adrian",
     email: "contact@jsmastery.pro",
     imageUrl: "/assets/images/david.webp",
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    // TODO: do logout endpoint later
+    navigate("/sign-in");
   };
 
   return (
@@ -53,12 +60,7 @@ const NavItems = ({ handleClick }: NavItemsProps) => {
             <h2>{user?.name}</h2>
             <p>{user?.email}</p>
           </article>
-          <button
-            onClick={() => {
-              console.log("logout");
-            }}
-            className="cursor-pointer"
-          >
+          <button onClick={handleLogout} className="cursor-pointer">
             <img
               src="/assets/icons/logout.svg"
               alt="logout"

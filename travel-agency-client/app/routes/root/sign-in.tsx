@@ -1,15 +1,24 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router";
-import axios from "~/api/axios";
+import { Link, redirect, useNavigate } from "react-router";
+import { GetCurrentUser } from "~/api/authApi";
+import Axios from "~/api/axios";
 import useAuth from "~/hooks/useAuth";
 import useAxiosPrivate from "~/hooks/useAxiosPrivate";
+
+export async function clientLoader() {
+  try {
+    const user = await GetCurrentUser();
+
+    if (!user.id) return redirect("/");
+  } catch (error) {
+    console.log("Error fetching user", error);
+  }
+}
 
 type SignInFormFields = {
   username: string;
   password: string;
 };
-
-export async function clientLoader() {}
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -23,7 +32,7 @@ const SignIn = () => {
     const { username, password } = data;
 
     try {
-      const resp = await axios.post<{ accessToken: string }>("/login", {
+      const resp = await Axios.post<{ accessToken: string }>("/login", {
         username,
         password,
       });
@@ -37,8 +46,6 @@ const SignIn = () => {
       console.log("error", error);
     }
   };
-
-  console.log("auth", auth);
 
   // check className auth for how to set up bg
   return (
