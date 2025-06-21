@@ -25,7 +25,7 @@ namespace Infrastructure.Processors
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public (string jwtToken, DateTime expiresAtUtc) GenerateJwtToken(User user)
+        public (string jwtToken, DateTime expiresAtUtc) GenerateJwtToken(User user, IList<string> roles)
         {
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
 
@@ -33,13 +33,13 @@ namespace Infrastructure.Processors
                 signingKey,
                 SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()), // Subject
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // Unique identifier of each token
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.NameId, user.ToString())
-            };
+            }.Concat(roles.Select(r => new Claim(ClaimTypes.Role, r))); // Add a claim for each role
 
             var expires = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpirationTimeInMinutes);
 

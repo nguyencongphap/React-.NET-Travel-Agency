@@ -1,4 +1,5 @@
 ﻿using Application.Abstracts;
+using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -46,11 +47,26 @@ namespace API.Controllers
             return Ok(new { accessToken });
         }
 
+        // TODO: DEL LATER. For testing authorization
         [Authorize]
         [HttpGet("/movies")]
         public async Task<IActionResult> GetMovies()
         {
             return Ok(new List<string> { "Matrix " });
+        }
+
+        [Authorize(Roles = IdentityRoleConstants.Admin)]
+        [HttpGet("/only-admin")]
+        public async Task<IActionResult> OnlyAdmin()
+        {
+            return Ok(new { Message = "You're an admin" });
+        }
+
+        [Authorize(Roles = IdentityRoleConstants.User)]
+        [HttpGet("/only-user")]
+        public async Task<IActionResult> OnlyUser()
+        {
+            return Ok(new { Message = "You're only a user" });
         }
 
     }

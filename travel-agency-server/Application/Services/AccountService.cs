@@ -1,4 +1,6 @@
 ﻿using Application.Abstracts;
+using Domain.Constants;
+using Domain.Enums;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using travel_agency_server.Domain.Entities;
@@ -50,6 +52,10 @@ namespace Application.Services
             {
                 throw new RegistrationFailedException(result.Errors.Select(x => x.Description));
             }
+
+            // Associate role to the user
+            // A row will be added to the AspNetUserRoles table to tie the AspNetUsers and the AspNetRoles together
+            await _userManager.AddToRoleAsync(user, GetIdentityRoleName(registerRequest.Role));
         }
 
         public async Task<string> LoginAsync(LoginRequest loginRequest)
@@ -84,11 +90,12 @@ namespace Application.Services
             return accessToken;
         }
 
-
         private async Task<string> GenerateNewTokensForUser(User user)
         {
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
             // create access token
-            var (jwtToken, expirationDateInUtc) = _authTokenProcessor.GenerateJwtToken(user);
+            var (jwtToken, expirationDateInUtc) = _authTokenProcessor.GenerateJwtToken(user, roles);
 
             // create refresh token
             var refreshTokenValue = _authTokenProcessor.GenerateRefreshToken();
@@ -107,5 +114,13 @@ namespace Application.Services
             return jwtToken;
         }
 
+        private string GetIdentityRoleName(Role role)
+        {
+            return role switch
+            {
+                Role.User => IdentityRoleConstants.User,
+                _ => throw new ArgumentOutOfRangeException(nameof(role), role, "Provided role is not supported"),
+            };
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace Application.Abstracts
 {
     public interface IAuthTokenProcessor
     {
-        public (string jwtToken, DateTime expiresAtUtc) GenerateJwtToken(User user);
+        public (string jwtToken, DateTime expiresAtUtc) GenerateJwtToken(User user, IList<string> roles);
 
         public string GenerateRefreshToken();
 
