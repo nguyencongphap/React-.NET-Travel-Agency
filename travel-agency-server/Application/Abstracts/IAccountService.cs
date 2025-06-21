@@ -9,5 +9,7 @@ namespace Application.Abstracts
         Task<string> LoginAsync(LoginRequest loginRequest);
 
         Task<string> RefreshTokenAsync(string? refreshToken);
+
+        Task LogoutAsync(string userName);
     }
 }

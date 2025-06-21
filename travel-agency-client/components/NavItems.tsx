@@ -1,20 +1,17 @@
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLoaderData, useNavigate } from "react-router";
+import { GetCurrentUser } from "~/api/authApi";
+import { AxiosPrivate } from "~/api/axios";
 import { sidebarItems } from "~/constants";
 import { cn } from "~/lib/utils";
 
 type NavItemsProps = { handleClick?: () => void };
 
 const NavItems = ({ handleClick }: NavItemsProps) => {
-  const user = {
-    name: "Adrian",
-    email: "contact@jsmastery.pro",
-    imageUrl: "/assets/images/david.webp",
-  };
-
+  const user = useLoaderData(); // useLoaderData gets the data from the loader function of the nearest route
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    // TODO: do logout endpoint later
+    await AxiosPrivate.post("/logout");
     navigate("/sign-in");
   };
 
@@ -51,10 +48,12 @@ const NavItems = ({ handleClick }: NavItemsProps) => {
         </nav>
 
         <footer className="nav-footer">
-          <img
+          {/* Implement profile picture later */}
+          {/* <img
             src={user?.imageUrl || "/assets/images/david.webp"}
             alt={user?.name || "David"}
-          />
+          /> */}
+
           {/* article is like a div but it says that the content within it are related*/}
           <article>
             <h2>{user?.name}</h2>
@@ -63,7 +62,7 @@ const NavItems = ({ handleClick }: NavItemsProps) => {
           <button onClick={handleLogout} className="cursor-pointer">
             <img
               src="/assets/icons/logout.svg"
-              alt="logout"
+              alt="/logout"
               className="size-6"
             />
           </button>

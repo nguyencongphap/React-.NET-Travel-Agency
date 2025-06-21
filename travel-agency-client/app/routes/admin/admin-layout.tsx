@@ -14,6 +14,8 @@ export async function clientLoader() {
     if (!user.roles.find((x) => x === ROLE_NAMES.Admin)) {
       return redirect("/");
     }
+
+    return user;
   } catch (error) {
     console.log("Error in clientLoader", error);
     return redirect("/sign-in");

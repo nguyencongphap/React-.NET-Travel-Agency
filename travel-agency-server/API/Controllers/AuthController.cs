@@ -3,7 +3,6 @@ using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using travel_agency_server.Domain.Requests;
 
 namespace API.Controllers
@@ -43,9 +42,9 @@ namespace API.Controllers
             // get cookie containing the refresh token from client using HttpContext
             var refreshToken = HttpContext.Request.Cookies["REFRESH_TOKEN"];
 
-            var accessToken = await _accountService.RefreshTokenAsync(refreshToken);
+            await _accountService.RefreshTokenAsync(refreshToken);
 
-            return Ok(new { accessToken });
+            return Ok();
         }
 
         [HttpGet("/me")]
@@ -69,6 +68,17 @@ namespace API.Controllers
                 Name = userName,
                 Roles = roles
             });
+        }
+
+        [HttpPost("/logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            var userName = User.Identity?.Name;
+
+            await _accountService.LogoutAsync(userName);
+
+            return Ok(new { message = "Logged out successfully" });
         }
 
         // TODO: DEL LATER. For testing authorization

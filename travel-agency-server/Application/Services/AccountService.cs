@@ -90,6 +90,34 @@ namespace Application.Services
             return accessToken;
         }
 
+        public async Task LogoutAsync(string? userName)
+        {
+            if (string.IsNullOrEmpty(userName))
+            {
+                throw new Exception("Unabe to sign this user out");
+            }
+
+            var user = await _userManager.FindByEmailAsync(userName!);
+
+            if (user == null)
+            {
+                throw new Exception("Unabe to sign this user out");
+            }
+
+            // Expire all tokens of user
+            var refreshTokenExpirationDateInUtc = DateTime.UtcNow.AddDays(-1);
+
+            user.RefreshToken = null;
+            user.RefreshTokenExpiresAtUtc = refreshTokenExpirationDateInUtc;
+
+            // update user in db to save the expired refresh token
+            await _userManager.UpdateAsync(user);
+
+            // return access token and refresh token stored in http-only cookies to client
+            _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", "", refreshTokenExpirationDateInUtc);
+            _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("REFRESH_TOKEN", "", refreshTokenExpirationDateInUtc);
+        }
+
         private async Task<string> GenerateNewTokensForUser(User user)
         {
             IList<string> roles = await _userManager.GetRolesAsync(user);
@@ -108,7 +136,7 @@ namespace Application.Services
             await _userManager.UpdateAsync(user);
 
             // return access token and refresh token stored in http-only cookies to client
-            _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", jwtToken, expirationDateInUtc); // We don't want to store auth token into cookies
+            _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("ACCESS_TOKEN", jwtToken, expirationDateInUtc);
             _authTokenProcessor.WriteAuthTokenAsHttpOnlyCookie("REFRESH_TOKEN", user.RefreshToken, refreshTokenExpirationDateInUtc);
 
             return jwtToken;
