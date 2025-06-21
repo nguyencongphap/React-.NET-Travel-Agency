@@ -11,7 +11,7 @@ export async function clientLoader() {
     if (!user.id) return redirect("/sign-in");
 
     // Only admin can see the admin dashboard
-    if (user.roles.find((x) => x === ROLE_NAMES.User)) {
+    if (!user.roles.find((x) => x === ROLE_NAMES.Admin)) {
       return redirect("/");
     }
   } catch (error) {
