@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Link, useLocation } from "react-router";
+import { Link, useNavigate } from "react-router";
 import axios from "~/api/axios";
 import useAuth from "~/hooks/useAuth";
 import useAxiosPrivate from "~/hooks/useAxiosPrivate";
@@ -9,7 +9,10 @@ type SignInFormFields = {
   password: string;
 };
 
+export async function clientLoader() {}
+
 const SignIn = () => {
+  const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
 
   const axiosPrivate = useAxiosPrivate();
@@ -24,6 +27,8 @@ const SignIn = () => {
         username,
         password,
       });
+
+      if (!username) navigate("/");
 
       setAuth({ username, accessToken: resp?.data?.accessToken });
 
