@@ -25,7 +25,7 @@ const SignIn = () => {
         password,
       });
 
-      setAuth({ username, password, accessToken: resp?.data?.accessToken });
+      setAuth({ username, accessToken: resp?.data?.accessToken });
 
       console.log("resp", resp);
     } catch (error) {

@@ -9,7 +9,6 @@ import {
 // TODO: update later for more security
 interface AuthState {
   username: string;
-  password: string;
   accessToken: string;
 }
 
