@@ -49,14 +49,15 @@ namespace API.Controllers
 
         [HttpGet("/me")]
         [Authorize] // Ensures only logged-in users can access
-        public IActionResult GetCurrentUser()
+        public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            var userName = User.Identity?.Name;
             var roles = User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
 
-            if (userId == null)
+            var user = await _accountService.GetCurrentUser(userEmail);
+
+            if (userId == null || user == null)
             {
                 return Unauthorized();
             }
@@ -65,7 +66,7 @@ namespace API.Controllers
             {
                 Id = userId,
                 Email = userEmail,
-                Name = userName,
+                Name = $"{user.FirstName} {user.LastName}",
                 Roles = roles
             });
         }
@@ -74,9 +75,9 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            var userName = User.Identity?.Name;
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
 
-            await _accountService.LogoutAsync(userName);
+            await _accountService.LogoutAsync(userEmail);
 
             return Ok(new { message = "Logged out successfully" });
         }

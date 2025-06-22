@@ -90,18 +90,25 @@ namespace Application.Services
             return accessToken;
         }
 
-        public async Task LogoutAsync(string? userName)
+        public async Task<User?> GetCurrentUser(string? userEmail)
         {
-            if (string.IsNullOrEmpty(userName))
+            var user = await _userManager.FindByEmailAsync(userEmail!);
+
+            return user;
+        }
+
+        public async Task LogoutAsync(string? userEmail)
+        {
+            if (string.IsNullOrEmpty(userEmail))
             {
                 throw new Exception("Unabe to sign this user out");
             }
 
-            var user = await _userManager.FindByEmailAsync(userName!);
+            var user = await _userManager.FindByEmailAsync(userEmail!);
 
             if (user == null)
             {
-                throw new Exception("Unabe to sign this user out");
+                throw new Exception("Unabe to find this user");
             }
 
             // Expire all tokens of user
