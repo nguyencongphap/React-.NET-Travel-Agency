@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace travel_agency_server.Domain.Entities
 {
@@ -9,7 +10,18 @@ namespace travel_agency_server.Domain.Entities
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiresAtUtc { get; set; }
 
-        public static User Create(string email, string firstName, string lastName)
+        public DateTime DateJoined { get; set; }
+        public int ItineraryCreated { get; set; }
+
+        public ICollection<UserRole> UserRoles { get; set; }
+
+        public static User Create(
+            string email, 
+            string firstName, 
+            string lastName,
+            DateTime dateJoined,
+            int itineraryCreated
+        )
         {
             return new User
             {
@@ -17,6 +29,8 @@ namespace travel_agency_server.Domain.Entities
                 UserName = email, // identity api requires us to specify Username
                 FirstName = firstName,
                 LastName = lastName,
+                DateJoined = dateJoined,
+                ItineraryCreated = itineraryCreated
             };
         }
 

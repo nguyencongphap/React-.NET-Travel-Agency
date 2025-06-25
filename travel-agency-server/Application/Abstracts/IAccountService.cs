@@ -5,7 +5,7 @@ namespace Application.Abstracts
 {
     public interface IAccountService
     {
-        Task RegisterAsync(RegisterRequest registerRequest);
+        Task RegisterAsync(RegisterRequest registerRequest, string roleName);
 
         Task<string> LoginAsync(LoginRequest loginRequest);
 

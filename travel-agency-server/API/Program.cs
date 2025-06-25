@@ -1,6 +1,7 @@
 using API.Handlers;
 using Application.Abstracts;
 using Application.Services;
+using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Options;
 using Infrastructure.Processors;
@@ -26,7 +27,7 @@ builder.Services.Configure<JwtOptions>(
     builder.Configuration.GetSection(JwtOptions.JwtOptionsKey));
 
 // set up identity
-builder.Services.AddIdentity<User, IdentityRole<Guid>>(options =>
+builder.Services.AddIdentity<User, Role>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;

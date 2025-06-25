@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpPost("/register")]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
-            await _accountService.RegisterAsync(registerRequest);
+            await _accountService.RegisterAsync(registerRequest, IdentityRoleConstants.User);
 
             return Ok();
         }
@@ -47,8 +47,8 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpGet("/me")]
         [Authorize] // Ensures only logged-in users can access
+        [HttpGet("/me")]
         public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -71,8 +71,8 @@ namespace API.Controllers
             });
         }
 
-        [HttpPost("/logout")]
         [Authorize]
+        [HttpPost("/logout")]
         public async Task<IActionResult> Logout()
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;

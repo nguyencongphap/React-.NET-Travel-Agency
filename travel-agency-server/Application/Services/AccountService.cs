@@ -25,7 +25,7 @@ namespace Application.Services
             _userRepository = userRepository;
         }
 
-        public async Task RegisterAsync(RegisterRequest registerRequest)
+        public async Task RegisterAsync(RegisterRequest registerRequest, string roleName)
         {
             // TODO: refactor this with FluentValidation
             // check if user already exists in db
@@ -39,7 +39,9 @@ namespace Application.Services
             var user = User.Create(
                 registerRequest.Email,
                 registerRequest.FirstName,
-                registerRequest.LastName
+                registerRequest.LastName,
+                DateTime.UtcNow,
+                0
             );
             // use the provided hasher to hash the password
             // give it the entity and password
@@ -55,7 +57,7 @@ namespace Application.Services
 
             // Associate role to the user
             // A row will be added to the AspNetUserRoles table to tie the AspNetUsers and the AspNetRoles together
-            await _userManager.AddToRoleAsync(user, GetIdentityRoleName(registerRequest.Role));
+            await _userManager.AddToRoleAsync(user, roleName);
         }
 
         public async Task<string> LoginAsync(LoginRequest loginRequest)

@@ -1,12 +1,23 @@
 ﻿using Domain.Constants;
+using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using travel_agency_server.Domain.Entities;
 
 namespace Infrastructure
 {
-    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+    public class ApplicationDbContext : IdentityDbContext<
+        User, 
+        Role, 
+        Guid,
+        IdentityUserClaim<Guid>,
+        UserRole,
+        IdentityUserLogin<Guid>,
+        IdentityRoleClaim<Guid>,
+        IdentityUserToken<Guid>
+        >
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -15,6 +26,7 @@ namespace Infrastructure
 
         // Tables
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -34,21 +46,34 @@ namespace Infrastructure
                 .Property(u => u.LastName).HasMaxLength(256);
 
             // Seed role data
-            builder.Entity<IdentityRole<Guid>>()
-                .HasData(new List<IdentityRole<Guid>>() {
-                    new IdentityRole<Guid>()
+            builder.Entity<Role>()
+                .HasData(new List<Role>() {
+                    new Role()
                     {
                         Id = IdentityRoleConstants.AdminRoleGuid,
                         Name = IdentityRoleConstants.Admin,
                         NormalizedName = IdentityRoleConstants.Admin.ToUpper()
                     },
-                    new IdentityRole<Guid>()
+                    new Role()
                     {
                         Id = IdentityRoleConstants.UserRoleGuid,
                         Name = IdentityRoleConstants.User,
                         NormalizedName = IdentityRoleConstants.User.ToUpper()
                     }
                 });
+
+            builder.Entity<UserRole>()
+                .HasKey(ur => new { ur.UserId, ur.RoleId });
+
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.User)
+                .WithMany(u => u.UserRoles)
+                .HasForeignKey(ur => ur.UserId);
+
+            builder.Entity<UserRole>()
+                .HasOne(ur => ur.Role)
+                .WithMany(r => r.UserRoles)
+                .HasForeignKey(ur => ur.RoleId);
         }
 
     }
