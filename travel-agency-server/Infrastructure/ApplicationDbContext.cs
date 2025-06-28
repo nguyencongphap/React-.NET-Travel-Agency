@@ -1,9 +1,9 @@
-﻿using Domain.Constants;
+﻿using Application.Abstracts;
+using Domain.Constants;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
 using travel_agency_server.Domain.Entities;
 
 namespace Infrastructure
@@ -17,7 +17,7 @@ namespace Infrastructure
         IdentityUserLogin<Guid>,
         IdentityRoleClaim<Guid>,
         IdentityUserToken<Guid>
-        >
+        >, IApplicationDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

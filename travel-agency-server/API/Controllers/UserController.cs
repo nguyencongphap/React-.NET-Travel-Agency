@@ -24,9 +24,9 @@ namespace API.Controllers
             _ctx = ctx;
         }
 
-        [Authorize(Roles = IdentityRoleConstants.Admin)]
+        [Authorize(Roles = "ADMIN")]
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers(int limit, int offset)
         {
             var test = await _userManager.GetUsersInRoleAsync(IdentityRoleConstants.Admin);
             var test1 = _ctx.Roles.ToList();
@@ -35,7 +35,11 @@ namespace API.Controllers
                             .ThenInclude(x => x.Role)
                             .ToList();
 
-            var users = _userManager.Users
+            var users = _ctx.Users
+                .Include(x => x.UserRoles)
+                .ThenInclude(x => x.Role)
+                .Skip(offset * limit)
+                .Take(limit)
                 .AsEnumerable()
                 .Select(x => new UserResponse
                 {
@@ -44,12 +48,11 @@ namespace API.Controllers
                     Email = x.Email,
                     DateJoined = x.DateJoined,
                     ItineraryCreated = x.ItineraryCreated,
+                    Roles = x.UserRoles.Select(r => r.Role.NormalizedName).ToList()
                 })
                 .ToList();
                 ;
-            return Ok(users);
-
-            return Ok();
+            return Ok(new { users, total = users.Count });
         }
     }
 }

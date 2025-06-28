@@ -1,4 +1,4 @@
-export enum ROLE_NAMES {
-  User = "User",
-  Admin = "Admin",
+export enum ROLE_NORMALIZED_NAMES {
+  User = "USER",
+  Admin = "ADMIN",
 }

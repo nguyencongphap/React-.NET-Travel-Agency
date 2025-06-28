@@ -1,3 +1,5 @@
+import type { ROLE_NORMALIZED_NAMES } from "./types/roleNames";
+
 declare interface BaseUser {
   id: string;
   name: string;
@@ -8,7 +10,7 @@ declare interface BaseUser {
 
 declare interface UserData extends BaseUser {
   itineraryCreated: number | string;
-  status: "user" | "admin";
+  roles: string[];
 }
 
 declare type User = BaseUser;

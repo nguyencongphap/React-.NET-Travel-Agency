@@ -2,7 +2,7 @@ import { Outlet, redirect } from "react-router";
 import { SidebarComponent } from "@syncfusion/ej2-react-navigations";
 import { MobileSidebar, NavItems } from "components";
 import { GetCurrentUser } from "~/api/authApi";
-import { ROLE_NAMES } from "~/types/roleNames";
+import { ROLE_NORMALIZED_NAMES } from "~/types/roleNames";
 
 export async function clientLoader() {
   try {
@@ -11,7 +11,7 @@ export async function clientLoader() {
     if (!user.id) return redirect("/sign-in");
 
     // Only admin can see the admin dashboard
-    if (!user.roles.find((x) => x === ROLE_NAMES.Admin)) {
+    if (!user.roles.find((x) => x === ROLE_NORMALIZED_NAMES.Admin)) {
       return redirect("/");
     }
 

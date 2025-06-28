@@ -3,6 +3,7 @@ using Domain.Constants;
 using Domain.Enums;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using travel_agency_server.Domain.Entities;
 using travel_agency_server.Domain.Requests;
 
@@ -13,16 +14,14 @@ namespace Application.Services
         private readonly IAuthTokenProcessor _authTokenProcessor;
         private readonly UserManager<User> _userManager;
         private readonly IUserRepository _userRepository;
+        private readonly IApplicationDbContext _ctx;
 
-        public AccountService(
-            IAuthTokenProcessor authTokenProcessor,
-            UserManager<User> userManager,
-            IUserRepository userRepository
-        )
+        public AccountService(IAuthTokenProcessor authTokenProcessor, UserManager<User> userManager, IUserRepository userRepository, IApplicationDbContext ctx)
         {
             _authTokenProcessor = authTokenProcessor;
             _userManager = userManager;
             _userRepository = userRepository;
+            _ctx = ctx;
         }
 
         public async Task RegisterAsync(RegisterRequest registerRequest, string roleName)
@@ -62,7 +61,10 @@ namespace Application.Services
 
         public async Task<string> LoginAsync(LoginRequest loginRequest)
         {
-            var user = await _userManager.FindByEmailAsync(loginRequest.Username);
+            var user = await _ctx.Users
+                            .Include(x => x.UserRoles)
+                            .ThenInclude(x => x.Role)
+                            .FirstOrDefaultAsync(x => x.UserName == loginRequest.Username);
 
             if (user == null || !await _userManager.CheckPasswordAsync(user, loginRequest.Password))
             {
@@ -129,7 +131,7 @@ namespace Application.Services
 
         private async Task<string> GenerateNewTokensForUser(User user)
         {
-            IList<string> roles = await _userManager.GetRolesAsync(user);
+            var roles = user.UserRoles.Select(x => x.Role.NormalizedName).ToList();
 
             // create access token
             var (jwtToken, expirationDateInUtc) = _authTokenProcessor.GenerateJwtToken(user, roles);

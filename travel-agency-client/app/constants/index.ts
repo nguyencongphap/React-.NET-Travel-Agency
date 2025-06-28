@@ -1,5 +1,6 @@
 import type { AxisModel } from "@syncfusion/ej2-react-charts";
 import { formatDate } from "~/lib/utils";
+import type { TripFormData } from "..";
 
 export const sidebarItems = [
   {
@@ -197,7 +198,7 @@ export const users = [
     imageUrl: "/assets/images/david.webp",
     dateJoined: formatDate("2025-01-01"),
     itineraryCreated: 10,
-    status: "user",
+    status: "User",
   },
   {
     id: 2,
@@ -206,7 +207,7 @@ export const users = [
     imageUrl: "/assets/images/david.webp",
     dateJoined: formatDate("2025-01-02"),
     itineraryCreated: 4,
-    status: "user",
+    status: "User",
   },
   {
     id: 3,
@@ -215,6 +216,6 @@ export const users = [
     imageUrl: "/assets/images/david.webp",
     dateJoined: formatDate("2025-01-03"),
     itineraryCreated: 8,
-    status: "admin",
+    status: "Admin",
   },
 ];

@@ -90,14 +90,14 @@ namespace API.Controllers
             return Ok(new List<string> { "Matrix " });
         }
 
-        [Authorize(Roles = IdentityRoleConstants.Admin)]
+        [Authorize(Roles = "ADMIN")]
         [HttpGet("/only-admin")]
         public async Task<IActionResult> OnlyAdmin()
         {
             return Ok(new { Message = "You're an admin" });
         }
 
-        [Authorize(Roles = IdentityRoleConstants.User)]
+        [Authorize(Roles = "USER")]
         [HttpGet("/only-user")]
         public async Task<IActionResult> OnlyUser()
         {

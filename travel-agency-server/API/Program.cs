@@ -47,6 +47,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // for dependency injection
 // AddScoped means that the service will be created once per request and disposed of at the end of the request
+builder.Services.AddScoped<IApplicationDbContext>(provider =>
+    provider.GetService<ApplicationDbContext>());
 builder.Services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountService, AccountService>();
