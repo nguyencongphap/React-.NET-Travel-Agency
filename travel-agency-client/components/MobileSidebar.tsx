@@ -33,7 +33,7 @@ const MobileSidebar = () => {
         width={270}
         // @ts-ignore
         ref={(Sidebar) => (sidebar = Sidebar)}
-        created={() => sidebar.hide()}
+        created={() => sidebar?.hide()}
         closeOnDocumentClick={true} // important for mobile sidebar bc we want auto close upon clicking
         showBackdrop={true}
         type="over" // show sidebar over the content
