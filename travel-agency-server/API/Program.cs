@@ -50,9 +50,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IApplicationDbContext>(provider =>
     provider.GetService<ApplicationDbContext>());
 builder.Services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddHttpContextAccessor(); // to get cookies from client's request
+// Repo's
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITripRepository, TripRepository>();
+builder.Services.AddScoped<ITripImageUrlRepository, TripImageUrlRepository>();
+builder.Services.AddScoped<IUserTripRepository, UserTripRepository>();
+// Services
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITripService, TripService>();
 
 // add auth middleware
 // This scheme means we want our app to use JWT authentication
@@ -117,19 +123,24 @@ if (app.Environment.IsDevelopment())
 
     app.MapOpenApi();
 
+    //app.Urls.Add("http://localhost:7104"); // HTTP version
+
     // set up scalar
     app.MapScalarApiReference(opt =>
     {
         opt.WithTitle("JWT + Refresh Token Auth API");
     });
 }
+else
+{
+    //  disable HTTPS redirection for development only
+    app.UseHttpsRedirection();
+}
 
 // must register the exception handler like this for it to work
 app.UseExceptionHandler(
-    _ => { } 
-);
-
-app.UseHttpsRedirection();
+        _ => { }
+    );
 
 // this order matters
 app.UseAuthentication();
@@ -138,7 +149,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
 
 // To create migrations:
 // dotnet ef migrations add MigrationName -s .\API\ -p .\Infrastructure\

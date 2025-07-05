@@ -91,7 +91,8 @@ const SignIn = () => {
             <p>Need an Account?</p>
             <Link to="/register">Sign Up</Link>
 
-            <button
+            {/* TODO: DEL LATER */}
+            {/* <button
               onClick={async () => {
                 const resp = await axiosPrivate.get("checkAuth");
                 console.log("check-auth resp", resp);
@@ -106,7 +107,7 @@ const SignIn = () => {
               }}
             >
               Test
-            </button>
+            </button> */}
           </article>
         </div>
       </section>

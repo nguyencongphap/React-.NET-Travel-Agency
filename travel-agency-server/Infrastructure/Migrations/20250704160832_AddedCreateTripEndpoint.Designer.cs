@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250704160832_AddedCreateTripEndpoint")]
+    partial class AddedCreateTripEndpoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,7 +81,12 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Trips");
                 });
@@ -118,21 +126,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserTrip", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("UserId", "TripId");
-
-                    b.HasIndex("TripId");
-
-                    b.ToTable("UserTrips");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -310,6 +303,17 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Trip", b =>
+                {
+                    b.HasOne("travel_agency_server.Domain.Entities.User", "User")
+                        .WithMany("Trips")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.TripImageUrl", b =>
                 {
                     b.HasOne("Domain.Entities.Trip", "Trip")
@@ -336,25 +340,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserTrip", b =>
-                {
-                    b.HasOne("Domain.Entities.Trip", "Trip")
-                        .WithMany("UserTrips")
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("travel_agency_server.Domain.Entities.User", "User")
-                        .WithMany("UserTrips")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
 
                     b.Navigation("User");
                 });
@@ -403,15 +388,13 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Trip", b =>
                 {
                     b.Navigation("TripImageUrls");
-
-                    b.Navigation("UserTrips");
                 });
 
             modelBuilder.Entity("travel_agency_server.Domain.Entities.User", b =>
                 {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Trips");
 
-                    b.Navigation("UserTrips");
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

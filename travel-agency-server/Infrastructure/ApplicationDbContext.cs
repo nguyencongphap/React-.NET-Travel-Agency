@@ -27,6 +27,10 @@ namespace Infrastructure
         // Tables
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<UserTrip> UserTrips { get; set; }
+        public DbSet<Trip> Trips { get; set; }
+        public DbSet<TripImageUrl> TripImageUrls { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -62,6 +66,7 @@ namespace Infrastructure
                     }
                 });
 
+            // UserRole
             builder.Entity<UserRole>()
                 .HasKey(ur => new { ur.UserId, ur.RoleId });
 
@@ -74,6 +79,21 @@ namespace Infrastructure
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(ur => ur.RoleId);
+
+            // UserTrip
+            builder.Entity<UserTrip>()
+                .HasKey(ut => new { ut.UserId, ut.TripId });
+
+            builder.Entity<UserTrip>()
+                .HasOne(ut => ut.User)
+                .WithMany(u => u.UserTrips)
+                .HasForeignKey(ut => ut.UserId);
+
+            builder.Entity<UserTrip>()
+                .HasOne(ut => ut.Trip)
+                .WithMany(t => t.UserTrips)
+                .HasForeignKey(ut => ut.TripId);
+
         }
 
     }

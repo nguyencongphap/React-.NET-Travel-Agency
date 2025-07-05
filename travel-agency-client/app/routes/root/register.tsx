@@ -21,7 +21,7 @@ const Register = () => {
     const { firstName, lastName, email, password } = data;
 
     try {
-      const resp = await Axios.post("/register", {
+      const resp = await Axios.post("Auth/register", {
         firstName,
         lastName,
         email,

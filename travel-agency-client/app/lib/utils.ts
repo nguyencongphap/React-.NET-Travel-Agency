@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import dayjs from "dayjs";
+import type { TrendResult, Trip, TripFormData } from "..";
 
 // first arg is the styles we always have
 // second arg is the styles we conditionally have

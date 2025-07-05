@@ -1,5 +1,4 @@
 ﻿using Domain.Constants;
-using Domain.Entities;
 using Domain.Responses;
 using Infrastructure;
 using Microsoft.AspNetCore.Authorization;
@@ -15,7 +14,6 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<Role> _roleManager;
         private readonly ApplicationDbContext _ctx;
 
         public UserController(UserManager<User> userManager, ApplicationDbContext ctx)
@@ -28,13 +26,6 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsers(int limit, int offset)
         {
-            var test = await _userManager.GetUsersInRoleAsync(IdentityRoleConstants.Admin);
-            var test1 = _ctx.Roles.ToList();
-            var test2 = _ctx.Users
-                            .Include(x => x.UserRoles)
-                            .ThenInclude(x => x.Role)
-                            .ToList();
-
             var users = _ctx.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)

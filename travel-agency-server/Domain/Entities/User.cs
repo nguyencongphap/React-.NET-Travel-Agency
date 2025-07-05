@@ -13,7 +13,9 @@ namespace travel_agency_server.Domain.Entities
         public DateTime DateJoined { get; set; }
         public int ItineraryCreated { get; set; }
 
-        public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; } = [];
+        public ICollection<UserTrip> UserTrips { get; set; } = [];
+
 
         public static User Create(
             string email, 

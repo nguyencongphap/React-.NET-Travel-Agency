@@ -11,7 +11,7 @@ const NavItems = ({ handleClick }: NavItemsProps) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await AxiosPrivate.post("/logout");
+    await AxiosPrivate.post("Auth/logout");
     navigate("/sign-in");
   };
 
