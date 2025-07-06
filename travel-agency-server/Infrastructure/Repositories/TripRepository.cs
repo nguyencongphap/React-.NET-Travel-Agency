@@ -20,11 +20,16 @@ namespace Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<int> GetTotalTripsCount()
+        {
+            return await _ctx.Trips.CountAsync();
+        }
+
         public async Task<IEnumerable<Trip>> GetAllTrips(int limit, int offset)
         {
             return await _ctx.Trips
                 .Include(x => x.TripImageUrls)
-                .Skip(offset * limit)
+                .Skip(offset)
                 .Take(limit)
                 .OrderBy(x => x.CreatedAt)
                 .ToListAsync();

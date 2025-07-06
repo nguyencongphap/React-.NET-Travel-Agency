@@ -15,6 +15,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     userId,
   } = await request.json();
 
+  // TODO: DEL LATER
+  console.log("interests", interests);
+
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
   const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY!;
 
@@ -24,7 +27,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     Interests: '${interests}'
     TravelStyle: '${travelStyle}'
     GroupType: '${groupType}'
-    Return the itinerary and lowest estimated price in a clean, non-markdown JSON format with the following structure:
+    Return the itinerary and lowest estimated price in a clean, non-markdown JSON format with the following structure 
+    (Trip {
+      name: string;
+      description: string;
+      estimatedPrice: string;
+      duration: number;
+      budget: string;
+      travelStyle: string;
+      country: string;
+      interests: string;
+      groupType: string;
+      bestTimeToVisit: string[];
+      weatherInfo: string[];
+      location: Location;
+      itinerary: [{ as described below }]
+    })
+    :
     {
     "name": "A descriptive title for the trip",
     "description": "A brief description of the trip and its highlights not exceeding 100 words",

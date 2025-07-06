@@ -9,7 +9,6 @@ import {
   ChipsDirective,
 } from "@syncfusion/ej2-react-buttons";
 import type { DayPlan, Trip } from "~/index";
-import { allTrips, interests } from "../../constants/index";
 
 export const clientLoader = async ({ params }: LoaderFunctionArgs) => {
   const { tripId } = params; // the name "tripId" is determined by routes.ts

@@ -25,6 +25,7 @@ export const links: Route.LinksFunction = () => [
 
 import { registerLicense } from "@syncfusion/ej2-base";
 import { AuthProvider } from "./context/AuthProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 registerLicense(import.meta.env.VITE_SYNCFUSION_LICENSE_KEY);
 
@@ -46,11 +47,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// Create a client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
+
 export default function App() {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

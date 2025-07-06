@@ -40,6 +40,13 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        public async Task<ActionResult> GetTotalTripsCount(int limit, int offset)
+        {
+            var total = await _tripService.GetTotalTripsCount();
+            return Ok(total);
+        }
+
+        [HttpGet]
         public async Task<ActionResult> GetAllTrips(int limit, int offset)
         {
             var trips = await _tripService.GetAllTrips(limit, offset);

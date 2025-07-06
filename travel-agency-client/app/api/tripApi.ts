@@ -18,6 +18,11 @@ export const GetTripById = async (id: number) => {
   return trip;
 };
 
+export const GetTotalTripsCount = async () => {
+  const res = await AxiosPrivate.get<number>("/Trip/GetTotalTripsCount");
+  return res.data;
+};
+
 export const GetAllTrips = async (limit: number, offset: number) => {
   const res = await AxiosPrivate.get<TripDto[]>("/Trip/GetAllTrips", {
     params: {
@@ -29,8 +34,10 @@ export const GetAllTrips = async (limit: number, offset: number) => {
 
   if (allTrips.length === 0) {
     console.error("No trips found");
-    return { allTrips: [], total: 0 };
+    return { allTrips: [] };
   }
 
-  return { allTrips: allTrips, total: allTrips.length };
+  return {
+    allTrips: allTrips,
+  };
 };

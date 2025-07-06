@@ -5,6 +5,7 @@ namespace Application.Abstracts
     public interface ITripService
     {
         Task<Trip?> GetTripById(int id);
+        Task<int> GetTotalTripsCount();
         Task<IEnumerable<Trip>> GetAllTrips(int limit, int offset);
         Task<Trip> CreateTripAsync(
             string tripDetail,

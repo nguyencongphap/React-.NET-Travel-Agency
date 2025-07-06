@@ -41,6 +41,9 @@ export function parseTripData(jsonString: string): Trip | null {
 }
 
 export function getFirstWord(input: string = ""): string {
+  // TODO: DEL LATER
+  console.log("input", input);
+
   if (!input) return "";
 
   return input.trim().split(/\s+/)[0] || "";

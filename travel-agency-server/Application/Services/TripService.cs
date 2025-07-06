@@ -23,6 +23,11 @@ namespace Application.Services
             return await _tripRepository.GetTripById(id);
         }
 
+        public async Task<int> GetTotalTripsCount()
+        {
+            return await _tripRepository.GetTotalTripsCount();
+        }
+
         public async Task<IEnumerable<Trip>> GetAllTrips(int limit, int offset)
         {
             return await _tripRepository.GetAllTrips(limit, offset);
