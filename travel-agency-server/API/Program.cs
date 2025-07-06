@@ -123,8 +123,6 @@ if (app.Environment.IsDevelopment())
 
     app.MapOpenApi();
 
-    //app.Urls.Add("http://localhost:7104"); // HTTP version
-
     // set up scalar
     app.MapScalarApiReference(opt =>
     {

@@ -24,9 +24,6 @@ export const clientLoader = async () => {
   const data = await response.json();
   const user = await GetCurrentUser();
 
-  // TODO: DEL LATER
-  console.log("user", user);
-
   return {
     userId: user.id,
     countries: data.map((country: any) => ({
@@ -62,9 +59,6 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
 
     // validation
     const { country, travelStyle, interest, budget, groupType } = formData;
-
-    // TODO: DEL LATER
-    console.log("formData", formData);
 
     if (!country || !travelStyle || !interest || !budget || !groupType) {
       setError("Please provide values for all fields");
@@ -130,10 +124,6 @@ const CreateTrip = ({ loaderData }: Route.ComponentProps) => {
           ?.coordinates || [],
     },
   ];
-
-  // TODO: DEL LATER
-  console.log("countryData", countryData);
-  console.log("mapData", mapData);
 
   return (
     <main className="flex flex-col gap-10 pb-20 wrapper">

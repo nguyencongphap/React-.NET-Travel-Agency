@@ -4,8 +4,8 @@ namespace Application.Abstracts
 {
     public interface ITripRepository
     {
-        Task<Trip> GetByIdAsync(int id);
-
+        Task<Trip?> GetTripById(int id);
+        Task<IEnumerable<Trip>> GetAllTrips(int limit, int offset);
         Task<Trip> AddAsync(Trip trip);
     }
 }

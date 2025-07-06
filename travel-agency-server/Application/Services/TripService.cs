@@ -18,6 +18,16 @@ namespace Application.Services
             _userTripRepository = userTripRepository;
         }
 
+        public async Task<Trip?> GetTripById(int id)
+        {
+            return await _tripRepository.GetTripById(id);
+        }
+
+        public async Task<IEnumerable<Trip>> GetAllTrips(int limit, int offset)
+        {
+            return await _tripRepository.GetAllTrips(limit, offset);
+        }
+
         // Create a new trip for a user
         public async Task<Trip> CreateTripAsync(
             string tripDetail,
