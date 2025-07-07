@@ -1,6 +1,6 @@
 import Header from "components/Header";
 import { useSearchParams, type LoaderFunctionArgs } from "react-router";
-import { GetAllTrips, GetTotalTripsCount } from "~/api/tripApi";
+import { getAllTrips, getTotalTripsCount } from "~/api/tripApi";
 import { parseTripData } from "~/lib/utils";
 import type { Route } from "./+types/trips";
 import { TripCard } from "components";
@@ -24,8 +24,8 @@ export const clientLoader = async ({ request }: LoaderFunctionArgs) => {
   // fire all async fetch calls at once
 
   const [{ allTrips }, total] = await Promise.all([
-    await GetAllTrips(limit, offset),
-    await GetTotalTripsCount(),
+    await getAllTrips(limit, offset),
+    await getTotalTripsCount(),
   ]);
 
   return {

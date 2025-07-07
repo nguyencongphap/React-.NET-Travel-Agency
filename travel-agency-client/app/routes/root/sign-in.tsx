@@ -1,13 +1,13 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Link, redirect, useNavigate } from "react-router";
-import { GetCurrentUser } from "~/api/authApi";
+import { getCurrentUser } from "~/api/authApi";
 import Axios from "~/api/axios";
 import useAuth from "~/hooks/useAuth";
 import useAxiosPrivate from "~/hooks/useAxiosPrivate";
 
 export async function clientLoader() {
   try {
-    const user = await GetCurrentUser();
+    const user = await getCurrentUser();
 
     if (user.id) return redirect("/");
   } catch (error) {

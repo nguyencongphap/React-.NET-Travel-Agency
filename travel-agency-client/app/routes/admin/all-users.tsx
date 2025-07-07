@@ -8,11 +8,11 @@ import { users } from "~/constants";
 import { cn, formatDate } from "~/lib/utils";
 import { ROLE_NORMALIZED_NAMES } from "~/types/roleNames";
 import type { UserData } from "~/index";
-import { GetAllUsers } from "./all-users/allUsersApi";
+import { getAllUsers } from "./all-users/allUsersApi";
 import type { Route } from "./+types/all-users";
 
 export const clientLoader = async () => {
-  const res = await GetAllUsers(10, 0);
+  const res = await getAllUsers(10, 0);
   return res;
 };
 

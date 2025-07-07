@@ -1,5 +1,5 @@
 import { Link, NavLink, useLoaderData, useNavigate } from "react-router";
-import { GetCurrentUser } from "~/api/authApi";
+import { getCurrentUser } from "~/api/authApi";
 import { AxiosPrivate } from "~/api/axios";
 import { sidebarItems } from "~/constants";
 import { cn } from "~/lib/utils";

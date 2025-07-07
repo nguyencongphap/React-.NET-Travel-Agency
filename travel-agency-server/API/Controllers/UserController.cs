@@ -24,13 +24,20 @@ namespace API.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers(int limit, int offset)
+        public async Task<IActionResult> GetAllUsers(int? limit, int offset = 0)
         {
-            var users = _ctx.Users
+            var query = _ctx.Users
                 .Include(x => x.UserRoles)
                 .ThenInclude(x => x.Role)
-                .Skip(offset * limit)
-                .Take(limit)
+                .Include(x => x.UserTrips)
+                .Skip(offset);
+
+            if (limit.HasValue)
+            {
+                query = query.Take(limit.Value);
+            }
+
+            var users = query
                 .AsEnumerable()
                 .Select(x => new UserResponse
                 {

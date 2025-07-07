@@ -10,7 +10,20 @@ export type User = {
   roles: ROLE_NORMALIZED_NAMES[];
 };
 
-export const GetCurrentUser = async () => {
+type UserKeysType = {
+  readonly [K in keyof User]: K;
+};
+
+export const USER_KEYS_TYPED: UserKeysType = {
+  id: "id",
+  name: "name",
+  email: "email",
+  dateJoined: "dateJoined",
+  itineraryCreated: "itineraryCreated",
+  roles: "roles",
+};
+
+export const getCurrentUser = async () => {
   const res = await AxiosPrivate.get<User>("/me");
   return res.data;
 };

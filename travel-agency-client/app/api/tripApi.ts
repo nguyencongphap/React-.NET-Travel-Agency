@@ -7,7 +7,18 @@ export interface TripDto {
   tripImageUrls: string[];
 }
 
-export const GetTripById = async (id: number) => {
+type TripDtoKeysType = {
+  readonly [K in keyof TripDto]: K;
+};
+
+export const TRIP_DTO_KEYS_TYPED: TripDtoKeysType = {
+  id: "id",
+  tripDetail: "tripDetail",
+  createdAt: "createdAt",
+  tripImageUrls: "tripImageUrls",
+};
+
+export const getTripById = async (id: number) => {
   const res = await AxiosPrivate.get<TripDto | undefined>(`/Trip/GetTripById`, {
     params: {
       id,
@@ -18,12 +29,12 @@ export const GetTripById = async (id: number) => {
   return trip;
 };
 
-export const GetTotalTripsCount = async () => {
+export const getTotalTripsCount = async () => {
   const res = await AxiosPrivate.get<number>("/Trip/GetTotalTripsCount");
   return res.data;
 };
 
-export const GetAllTrips = async (limit: number, offset: number) => {
+export const getAllTrips = async (limit: number, offset: number) => {
   const res = await AxiosPrivate.get<TripDto[]>("/Trip/GetAllTrips", {
     params: {
       limit,

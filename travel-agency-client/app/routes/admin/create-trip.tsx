@@ -12,7 +12,7 @@ import {
 import { useState, type FormEvent } from "react";
 import { world_map } from "~/constants/world_map";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-import { GetCurrentUser } from "~/api/authApi";
+import { getCurrentUser } from "~/api/authApi";
 import type { CreateTripResponse } from "../api/create-trip";
 import { useNavigate } from "react-router";
 
@@ -22,7 +22,7 @@ export const clientLoader = async () => {
     "https://restcountries.com/v3.1/all?fields=flag,name,latlng,maps"
   );
   const data = await response.json();
-  const user = await GetCurrentUser();
+  const user = await getCurrentUser();
 
   return {
     userId: user.id,

@@ -11,10 +11,12 @@ namespace travel_agency_server.Domain.Entities
         public DateTime? RefreshTokenExpiresAtUtc { get; set; }
 
         public DateTime DateJoined { get; set; }
-        public int ItineraryCreated { get; set; }
 
         public ICollection<UserRole> UserRoles { get; set; } = [];
         public ICollection<UserTrip> UserTrips { get; set; } = [];
+
+        // calculated fields
+        public int ItineraryCreated => UserTrips?.Count ?? 0;
 
 
         public static User Create(
@@ -32,7 +34,6 @@ namespace travel_agency_server.Domain.Entities
                 FirstName = firstName,
                 LastName = lastName,
                 DateJoined = dateJoined,
-                ItineraryCreated = itineraryCreated
             };
         }
 

@@ -1,12 +1,12 @@
 import { Outlet, redirect } from "react-router";
 import { SidebarComponent } from "@syncfusion/ej2-react-navigations";
 import { MobileSidebar, NavItems } from "components";
-import { GetCurrentUser } from "~/api/authApi";
+import { getCurrentUser } from "~/api/authApi";
 import { ROLE_NORMALIZED_NAMES } from "~/types/roleNames";
 
 export async function clientLoader() {
   try {
-    const user = await GetCurrentUser();
+    const user = await getCurrentUser();
 
     if (!user.id) return redirect("/sign-in");
 
