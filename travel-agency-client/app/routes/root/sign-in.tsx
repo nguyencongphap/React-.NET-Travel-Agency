@@ -90,24 +90,6 @@ const SignIn = () => {
             </form>
             <p>Need an Account?</p>
             <Link to="/register">Sign Up</Link>
-
-            {/* TODO: DEL LATER */}
-            {/* <button
-              onClick={async () => {
-                const resp = await axiosPrivate.get("checkAuth");
-                console.log("check-auth resp", resp);
-              }}
-            >
-              Send Authorized Request
-            </button>
-
-            <button
-              onClick={async () => {
-                await axiosPrivate.get("/movies");
-              }}
-            >
-              Test
-            </button> */}
           </article>
         </div>
       </section>

@@ -15,9 +15,6 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     userId,
   } = await request.json();
 
-  // TODO: DEL LATER
-  console.log("interests", interests);
-
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
   const unsplashApiKey = process.env.UNSPLASH_ACCESS_KEY!;
 

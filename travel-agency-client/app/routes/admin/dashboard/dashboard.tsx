@@ -64,9 +64,6 @@ export const clientLoader = async () => {
     count: user.itineraryCreated,
   }));
 
-  // TODO: DEL LATER
-  console.log("users", users);
-
   return {
     user,
     dashboardStats,
@@ -107,11 +104,6 @@ const Dashboard = ({ loaderData }: Route.ComponentProps) => {
       headerText: "Interests",
     },
   ];
-
-  // TODO: DEL LATER
-  // TODO: Continue at 5:20:40
-  console.log("userGrowth", userGrowth);
-  console.log("tripsByTravelStyle", tripsByTravelStyle);
 
   return (
     <main className="dashboard wrapper">

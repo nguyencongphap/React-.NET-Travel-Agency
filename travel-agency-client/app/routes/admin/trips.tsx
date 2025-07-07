@@ -17,12 +17,7 @@ export const clientLoader = async ({ request }: LoaderFunctionArgs) => {
   const page = parseInt(url.searchParams.get("page") || "1", 10);
   const offset = (page - 1) * limit;
 
-  // TODO: DEL LATER
-  console.log("searchParams.get", url.searchParams.get("page"));
-  console.log("request", request);
-
   // fire all async fetch calls at once
-
   const [{ allTrips }, total] = await Promise.all([
     await getAllTrips(limit, offset),
     await getTotalTripsCount(),
