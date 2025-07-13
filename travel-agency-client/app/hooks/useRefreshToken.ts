@@ -6,7 +6,7 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     if (auth) {
-      const resp = await Axios.post("Auth/refresh");
+      const resp = await Axios.post("Auth/RefreshToken");
 
       const newAccessToken = resp?.data?.accessToken;
 

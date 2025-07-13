@@ -24,6 +24,6 @@ export const USER_KEYS_TYPED: UserKeysType = {
 };
 
 export const getCurrentUser = async () => {
-  const res = await AxiosPrivate.get<User>("/me");
+  const res = await AxiosPrivate.get<User>("Auth/GetCurrentUser");
   return res.data;
 };

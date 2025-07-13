@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace travel_agency_server.Domain.Entities
 {
@@ -16,6 +17,8 @@ namespace travel_agency_server.Domain.Entities
         public ICollection<UserTrip> UserTrips { get; set; } = [];
 
         // calculated fields
+        //  The [NotMapped] attribute tells Entity Framework to ignore this property when creating the database schema
+        [NotMapped]
         public int ItineraryCreated => UserTrips?.Count ?? 0;
 
 
@@ -23,8 +26,7 @@ namespace travel_agency_server.Domain.Entities
             string email, 
             string firstName, 
             string lastName,
-            DateTime dateJoined,
-            int itineraryCreated
+            DateTime dateJoined
         )
         {
             return new User

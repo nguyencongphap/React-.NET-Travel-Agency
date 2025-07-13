@@ -5,7 +5,7 @@ const PageLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await AxiosPrivate.post("Auth/logout");
+    await AxiosPrivate.post("Auth/Logout");
     navigate("/sign-in");
   };
 

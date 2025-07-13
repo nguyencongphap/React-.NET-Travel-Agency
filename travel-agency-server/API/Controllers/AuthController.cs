@@ -8,7 +8,7 @@ using travel_agency_server.Domain.Requests;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class AuthController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -20,7 +20,7 @@ namespace API.Controllers
             _accountService = accountService;
         }
 
-        [HttpPost("/register")]
+        [HttpPost]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
             await _accountService.RegisterAsync(registerRequest, IdentityRoleConstants.User);
@@ -28,7 +28,7 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpPost("/login")]
+        [HttpPost]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
             var accessToken = await _accountService.LoginAsync(loginRequest);
@@ -36,7 +36,7 @@ namespace API.Controllers
             return Ok(new { accessToken });
         }
 
-        [HttpPost("/refresh")]
+        [HttpPost]
         public async Task<IActionResult> RefreshToken()
         {
             // get cookie containing the refresh token from client using HttpContext
@@ -48,7 +48,7 @@ namespace API.Controllers
         }
 
         [Authorize] // Ensures only logged-in users can access
-        [HttpGet("/me")]
+        [HttpGet]
         public async Task<IActionResult> GetCurrentUser()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -72,7 +72,7 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost("/logout")]
+        [HttpPost]
         public async Task<IActionResult> Logout()
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;

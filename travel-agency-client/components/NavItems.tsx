@@ -1,5 +1,4 @@
 import { Link, NavLink, useLoaderData, useNavigate } from "react-router";
-import { getCurrentUser } from "~/api/authApi";
 import { AxiosPrivate } from "~/api/axios";
 import { sidebarItems } from "~/constants";
 import { cn } from "~/lib/utils";
@@ -11,7 +10,7 @@ const NavItems = ({ handleClick }: NavItemsProps) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await AxiosPrivate.post("Auth/logout");
+    await AxiosPrivate.post("Auth/Logout");
     navigate("/sign-in");
   };
 

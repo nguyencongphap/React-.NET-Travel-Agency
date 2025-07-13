@@ -32,7 +32,7 @@ const SignIn = () => {
     const { username, password } = data;
 
     try {
-      const resp = await Axios.post<{ accessToken: string }>("/login", {
+      const resp = await Axios.post<{ accessToken: string }>("Auth/Login", {
         username,
         password,
       });

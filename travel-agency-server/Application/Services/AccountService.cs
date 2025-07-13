@@ -39,8 +39,7 @@ namespace Application.Services
                 registerRequest.Email,
                 registerRequest.FirstName,
                 registerRequest.LastName,
-                DateTime.UtcNow,
-                0
+                DateTime.UtcNow
             );
             // use the provided hasher to hash the password
             // give it the entity and password
